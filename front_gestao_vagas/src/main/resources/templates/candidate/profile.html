@@ -23,22 +23,22 @@
 
     <div class="container mx-auto mt-8">
         <div class="bg-gray-800 p-8 rounded-mg shadow-md">
-            <h1 class="text-2xl font-bold text-gray-100 text-center mb-8">Nome Candidato</h1>
+            <h1 class="text-2xl font-bold text-gray-100 text-center mb-8" th:text="${user.name}"></h1>
 
-            <div class="text-center mb-4">
-                <p class="text-gray-400">
-                    <span class="font-bold">User:</span> username
-                </p>
-                <p class="text-gray-400">
-                    <span class="font-bold">E-mail:</span> e-mail
-                </p>
-                <p class="text-gray-400">
-                    <span class="font-bold">Name:</span> name
-                </p>
-                <p class="text-gray-400">
-                    <span class="font-bold">Description:</span> description
-                </p>
-            </div>
+            <form th:object="${user}">
+                <div class="text-center mb-4">
+                    <p class="text-gray-400">
+                        <span class="font-bold">Username:</span> <span th:text="${user.username}"></span>
+                    </p>
+                    <p class="text-gray-400">
+                        <span class="font-bold">E-mail:</span> <span th:text="${user.email}"></span>
+                    </p>
+                    <p class="text-gray-400">
+                        <span class="font-bold">Description:</span> <span th:text="${user.description}"></span>
+                    </p>
+                </div>
+            </form>
+
         </div>
     </div>
 </body>
