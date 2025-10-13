@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Vagas Disponiveis</title>
+</head>
+
+<body class="bg-gray-900">
+
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-start text-white">
+                <div class="space-x-4">
+                    <a href="/candidate/profile">Profile</a>
+                    <a href="/candidate/jobs" class=" bg-gray-900 rounded-md px-3 py-2">Vagas</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container mx-auto mt-24 text-center">
+        <form action="">
+            <input type="text" name="filter" class="bg-gray-50 text-gray-500 rounded w-96 p-2 focus:outline-none"
+                placeholder="Busca">
+            <button class="bg-green-600 text-white hover:bg-green-500 ml-2 w-24 p-2 rounded">Buscar</button>
+        </form>
+
+        <div class="text-white" th:each="job: ${jobs}">
+            <h3 th:text="${job.description}"></h3>
+            <span th:text="${job.level}"></span>
+        </div>
+
+    </div>
+</body>
+
+</html>
