@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.guilherme.front_gestao_vagas.modules.candidate.dto.CreateCandidateDTO;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.ApplyJobService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.CandidateService;
+import br.com.guilherme.front_gestao_vagas.modules.candidate.service.CreateCandidateService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.FindJobService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.ProfileCandidateService;
+import br.com.guilherme.front_gestao_vagas.utils.FormatErrorMessage;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -41,14 +44,12 @@ public class CandidateController {
     @Autowired
     private ApplyJobService applyJobService;
 
+    @Autowired
+    private CreateCandidateService createCandidateService;
+
     @GetMapping("/login")
     public String login() {
         return "candidate/login";
-    }
-
-    @GetMapping("/create")
-    public String create() {
-        return "candidate/create";
     }
 
     @PostMapping("/signIn")
@@ -109,6 +110,23 @@ public class CandidateController {
     public String applyJob(@RequestParam("jobId") UUID jobId) {
         this.applyJobService.execute(getToken(), jobId);
         return "redirect:/candidate/jobs";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("candidate", new CreateCandidateDTO());
+        return "candidate/create";
+    }
+
+    @PostMapping("/create")
+    public String save(CreateCandidateDTO candidate, Model model) {
+        try {
+            this.createCandidateService.execute(candidate);
+        } catch (HttpClientErrorException ex) {
+            model.addAttribute("error_message", FormatErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
+        }
+        model.addAttribute("candidate", candidate);
+        return "candidate/create";
     }
 
     private String getToken() {
