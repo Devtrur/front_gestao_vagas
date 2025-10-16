@@ -1,0 +1,39 @@
+package br.com.guilherme.front_gestao_vagas.modules.company;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
+
+import br.com.guilherme.front_gestao_vagas.modules.company.dto.CreateCompanyDTO;
+import br.com.guilherme.front_gestao_vagas.modules.company.services.CreateCompanyService;
+import br.com.guilherme.front_gestao_vagas.utils.FormatErrorMessage;
+
+@Controller
+@RequestMapping("/company")
+public class CompanyController {
+
+    @Autowired
+    private CreateCompanyService createCompanyService;
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("company", new CreateCompanyDTO());
+        return "company/create";
+    }
+
+    @PostMapping("/create")
+    public String save(CreateCompanyDTO companyDTO, Model model) {
+        try {
+            this.createCompanyService.execute(companyDTO);
+        } catch (HttpClientErrorException ex) {
+            model.addAttribute("error_message", FormatErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
+            model.addAttribute("company", companyDTO);
+        }
+        model.addAttribute("company", companyDTO);
+        return "company/create";
+    }
+}

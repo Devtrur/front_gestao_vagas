@@ -87,7 +87,7 @@ public class CandidateController {
 
             return "candidate/profile";
         } catch (HttpClientErrorException e) {
-            return "redirect:/candidate/login";
+            return "redirect:candidate/login";
         }
     }
 
