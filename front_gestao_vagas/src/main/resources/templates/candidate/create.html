@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cadastro do Candidato</title>
+</head>
+
+<body class="bg-gray-900 h-screen items-center flex justify-center">
+    <form id="submitForm" action="" class="flex gap-24" th:action="@{/candidate/signIn}" method="post">
+        <div class="space-y-8 bg-zinc-950 rounded-md p-10">
+            <h2 class="text-white text-center font-bold text-xl">Crie seu cadastro</h2>
+
+            <input type="email" name="email"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Digite seu e-mail">
+            <input type="text" name="name"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Digite seu nome">
+            <input type="text" name="username"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Digite seu usuário">
+            <input type="password" name="password" id="password"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Digite sua senha">
+            <input type="password" name="confirmPassword" id="confirmPassword"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Confirme sua senha">
+            <p class="text-red-400 hidden" id="password_error"> As senhas são diferentes </p>
+            <textarea name="description"
+                class="bg-gray-50 text-gray-900 text-xd rounded w-96 block p-3 focus:outline-none focus:ring-green-600 focus:ring-2"
+                placeholder="Digite um pouco sobre você"></textarea>
+            <button class="bg-green-900 w-96 p-4 rounded text-white hover:bg-green-700">Cadastre-se</button>
+            <a href="/candidate/login"
+                class="text-white block text-center text-green-700 underline undeline-offset-2 hover:text-green-600">Login</a>
+        </div>
+        <div class="text-white max-w-80 text-6xl flex items-center">
+            Gestao de Vagas
+        </div>
+    </form>
+</body>
+<script>
+    document.getElementById("submitForm").addEventListener("submit", (eventt) => {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            document.getElementById("password_error").classList.remove("hidden")
+            event.preventDefault();
+        }
+    })
+</script>
+
+</html>

@@ -1,6 +1,9 @@
 package br.com.guilherme.front_gestao_vagas.modules.candidate.controller;
 
 import org.springframework.security.core.Authentication;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,9 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.guilherme.front_gestao_vagas.modules.candidate.service.ApplyJobService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.CandidateService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.FindJobService;
 import br.com.guilherme.front_gestao_vagas.modules.candidate.service.ProfileCandidateService;
@@ -33,9 +38,17 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
+    @Autowired
+    private ApplyJobService applyJobService;
+
     @GetMapping("/login")
     public String login() {
         return "candidate/login";
+    }
+
+    @GetMapping("/create")
+    public String create() {
+        return "candidate/create";
     }
 
     @PostMapping("/signIn")
@@ -89,6 +102,13 @@ public class CandidateController {
             return "redirect:/candidate/login";
         }
         return "candidate/jobs";
+    }
+
+    @PostMapping("/job/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    public String applyJob(@RequestParam("jobId") UUID jobId) {
+        this.applyJobService.execute(getToken(), jobId);
+        return "redirect:/candidate/jobs";
     }
 
     private String getToken() {
