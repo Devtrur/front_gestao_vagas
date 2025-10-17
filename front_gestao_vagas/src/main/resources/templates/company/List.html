@@ -5,17 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Cadastro de Vagas</title>
+    <title>Listagem de Vagas</title>
 </head>
 
 <body class="bg-gray-900 h-screen flex flex-col">
     <nav class=" bg-zinc-900 p-4 flex justify-between items-center">
-        <div><a href="" class="text-white text-lg font-semibold">Cadastro</a></div>
-        <div><a href="" class="text-white text-lg font-semibold">Listagem</a></div>
-        <div><a href="" class="text-white text-lg font-semibold">logout</a></div>
+        <div><a href="/company/jobs" class="text-white text-lg font-semibold">Cadastro</a></div>
+        <div><a href="/company/jobs/list" class="text-white text-lg font-semibold">Listagem</a></div>
+        <div><a href="/company/jobs/logout" class="text-white text-lg font-semibold">logout</a></div>
     </nav>
-    <div class=" flex flex-grow items-center justify-center">
-
+    <p class="text-white font-bold text-center text-3xl pt-5">Listagem de Vagas</p>
+    <div class=" flex flex-grow pt-10 justify-center">
+        <div class="pb-3 w-9/12 max-w-full">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-zinc-900 text-white">
+                        <th class="text-left py-2 px-4">ID</th>
+                        <th class="text-left py-2 px-4">Descrição</th>
+                        <th class="text-left py-2 px-4">Benefícios</th>
+                        <th class="text-left py-2 px-4">Nível</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="job: ${jobs}" class="text-gray-200 font-semibold">
+                        <td class="border px-4 py-2" th:text="${job.id}"></td>
+                        <td class="border px-4 py-2" th:text="${job.description}"></td>
+                        <td class="border px-4 py-2" th:text="${job.benefits}"></td>
+                        <td class="border px-4 py-2" th:text="${job.level}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 

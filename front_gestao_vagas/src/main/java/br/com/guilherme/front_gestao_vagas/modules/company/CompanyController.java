@@ -19,6 +19,7 @@ import br.com.guilherme.front_gestao_vagas.modules.candidate.dto.CreateJobsDTO;
 import br.com.guilherme.front_gestao_vagas.modules.company.dto.CreateCompanyDTO;
 import br.com.guilherme.front_gestao_vagas.modules.company.services.CreateCompanyService;
 import br.com.guilherme.front_gestao_vagas.modules.company.services.CreateJobsService;
+import br.com.guilherme.front_gestao_vagas.modules.company.services.ListAllJobCompanyService;
 import br.com.guilherme.front_gestao_vagas.modules.company.services.LoginCompanyService;
 import br.com.guilherme.front_gestao_vagas.utils.FormatErrorMessage;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +37,9 @@ public class CompanyController {
     @Autowired
     private CreateJobsService createJobsService;
 
+    @Autowired
+    private ListAllJobCompanyService listAllJobCompanyService;
+
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("company", new CreateCompanyDTO());
@@ -46,6 +50,7 @@ public class CompanyController {
     public String save(CreateCompanyDTO companyDTO, Model model) {
         try {
             this.createCompanyService.execute(companyDTO);
+            model.addAttribute("company", new CreateCompanyDTO());
         } catch (HttpClientErrorException ex) {
             model.addAttribute("error_message", FormatErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
             model.addAttribute("company", companyDTO);
@@ -95,7 +100,15 @@ public class CompanyController {
     @PostMapping("/jobs")
     public String createJobs(CreateJobsDTO jobs) {
         this.createJobsService.execute(jobs, getToken());
-        return "redirect:/company/jobs";
+        return "redirect:/company/jobs/list";
+    }
+
+    @GetMapping("/jobs/list")
+    @PreAuthorize("hasRole('COMPANY')")
+    public String list(Model model) {
+        var result = this.listAllJobCompanyService.execute(getToken());
+        model.addAttribute("jobs", result);
+        return "company/list";
     }
 
     private String getToken() {
